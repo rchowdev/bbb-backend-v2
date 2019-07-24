@@ -34,6 +34,10 @@ const typeDefs = `
         books: [Book!]!
     }
 
+    type Mutation {
+        createUser(name: String!, email: String!): User!
+    }
+
     type User {
         id: ID!
         name: String!
@@ -65,6 +69,11 @@ const resolvers = {
         },
         books(parent, args, ctx, info) {
             return books
+        }
+    },
+    Mutation: {
+        createUser(parent, args, ctx, info) {
+            users.push()
         }
     },
     User: {

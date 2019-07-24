@@ -30,6 +30,7 @@ const typeDefs = `
     type Query {
         user(id: ID!): User!
         users(query: String): [User!]!
+        book(id: ID!): Book!
         books: [Book!]!
     }
 
@@ -59,13 +60,21 @@ const resolvers = {
                 ? users.filter(user => user.name.toLowerCase().includes(args.query.toLowerCase()))
                 : users
         },
+        book(parent, args, ctx, info) {
+            return books.find(book => book.id === args.id)
+        },
         books(parent, args, ctx, info) {
             return books
         }
     },
     User: {
         books(parent, args, ctx, info) {
-            return books
+            return books.filter(book => book.users.includes(parent.id))
+        }
+    },
+    Book: {
+        users(parent, args, ctx, info) {
+            return users.filter(user => user.books.includes(parent.id))
         }
     }
 }
@@ -76,5 +85,5 @@ const server = new GraphQLServer({
 })
 
 server.start(() => {
-    console.log("Server is running");
+    console.log("Server is running")
 })

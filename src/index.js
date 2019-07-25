@@ -1,4 +1,5 @@
 import { GraphQLServer } from 'graphql-yoga'
+import uuidv4 from 'uuid/v4'
 
 //Dummy data
 const users = [{
@@ -36,6 +37,7 @@ const typeDefs = `
 
     type Mutation {
         createUser(name: String!, email: String!): User!
+        createBook(title: String!, author: String!, user: ID!): Book!
     }
 
     type User {
@@ -73,7 +75,39 @@ const resolvers = {
     },
     Mutation: {
         createUser(parent, args, ctx, info) {
-            users.push()
+            const emailTaken = users.some(user => user.email.toLowerCase() === args.email.toLowerCase())
+            if(emailTaken){
+                throw new Error("Email has already been taken.")
+            }
+
+            const user = {
+                id: uuidv4(),
+                name: args.name,
+                email: args.email,
+                books: []
+            }
+
+            users.push(user)
+            return user
+        },
+        createBook(parent, args, ctx, info) {
+            const userExists = users.some(user => user.id === args.user)
+            if(!userExists) {
+                throw new Error("User not found.")
+            }
+
+            const newBook = {
+                id: uuidv4(),
+                title: args.title,
+                author: args.author,
+                users: []
+            }
+
+            const book = books.find(book => book.title === args.title) || newBook 
+            book.users.push(args.user)
+            books.push(book)
+            
+            return book
         }
     },
     User: {

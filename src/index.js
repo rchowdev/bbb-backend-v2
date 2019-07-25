@@ -82,30 +82,37 @@ const resolvers = {
 
             const user = {
                 id: uuidv4(),
-                name: args.name,
-                email: args.email,
-                books: []
+                ...args
             }
 
             users.push(user)
             return user
         },
         createBook(parent, args, ctx, info) {
-            const userExists = users.some(user => user.id === args.user)
-            if(!userExists) {
+            const user = users.find(user => user.id === args.user)
+            if(!user) {
                 throw new Error("User not found.")
             }
 
-            const newBook = {
-                id: uuidv4(),
-                title: args.title,
-                author: args.author,
-                users: []
+            let book = books.find(book => book.title === args.title)
+            if (book) {
+                const userOwnsBook = book.users.some(user => user.id === args.user)
+                if(userOwnsBook) {
+                    throw new Error("User already owns the book")
+                } else {
+                    user.books.push(book)
+                    book.users.push(args.user)
+                }
+            } else {
+                book = {
+                    id: uuidv4(),
+                    title: args.title,
+                    author: args.author,
+                    users: [args.user]
+                }
+                user.books.push(book)
+                books.push(book)
             }
-
-            const book = books.find(book => book.title === args.title) || newBook 
-            book.users.push(args.user)
-            books.push(book)
             
             return book
         }

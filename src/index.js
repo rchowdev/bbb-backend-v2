@@ -36,8 +36,13 @@ const typeDefs = `
     }
 
     type Mutation {
-        createUser(name: String!, email: String!): User!
+        createUser(user: CreateUserInput!): User!
         createBook(title: String!, author: String!, user: ID!): Book!
+    }
+
+    input CreateUserInput {
+        name: String!
+        email: String!
     }
 
     type User {
@@ -75,14 +80,14 @@ const resolvers = {
     },
     Mutation: {
         createUser(parent, args, ctx, info) {
-            const emailTaken = users.some(user => user.email.toLowerCase() === args.email.toLowerCase())
+            const emailTaken = users.some(user => user.email.toLowerCase() === args.user.email.toLowerCase())
             if(emailTaken){
                 throw new Error("Email has already been taken.")
             }
 
             const user = {
                 id: uuidv4(),
-                ...args
+                ...args.user
             }
 
             users.push(user)

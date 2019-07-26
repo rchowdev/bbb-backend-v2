@@ -5,43 +5,44 @@ import db from './db'
 //Resolvers
 const resolvers = {
     Query: {
-        user(parent, args, ctx, info) {
-            return users.find(user => user.id === args.id)
+        user(parent, args, { db }, info) {
+            return db.users.find(user => user.id === args.id)
         },
-        users(parent, args, ctx, info) {
+        users(parent, args, { db }, info) {
             return args.query 
-                ? users.filter(user => user.name.toLowerCase().includes(args.query.toLowerCase()))
-                : users
+                ? db.users.filter(user => user.name.toLowerCase().includes(args.query.toLowerCase()))
+                : db.users
         },
-        book(parent, args, ctx, info) {
-            return books.find(book => book.id === args.id)
+        book(parent, args, { db }, info) {
+            return db.books.find(book => book.id === args.id)
         },
-        books(parent, args, ctx, info) {
-            return books
+        books(parent, args, { db }, info) {
+            return db.books
         }
     },
     Mutation: {
-        createUser(parent, args, ctx, info) {
-            const emailTaken = users.some(user => user.email.toLowerCase() === args.user.email.toLowerCase())
+        createUser(parent, args, { db }, info) {
+            const emailTaken = db.users.some(user => user.email.toLowerCase() === args.user.email.toLowerCase())
             if(emailTaken){
                 throw new Error("Email has already been taken.")
             }
 
             const user = {
                 id: uuidv4(),
-                ...args.user
+                ...args.user,
+                books: []
             }
 
-            users.push(user)
+            db.users.push(user)
             return user
         },
-        createBook(parent, args, ctx, info) {
-            const user = users.find(user => user.id === args.user)
+        createBook(parent, args, { db }, info) {
+            const user = db.users.find(user => user.id === args.user)
             if(!user) {
                 throw new Error("User not found.")
             }
 
-            let book = books.find(book => book.title === args.title)
+            let book = db.books.find(book => book.title === args.title)
             if (book) {
                 const userOwnsBook = book.users.some(user => user.id === args.user)
                 if(userOwnsBook) {
@@ -58,20 +59,20 @@ const resolvers = {
                     users: [args.user]
                 }
                 user.books.push(book)
-                books.push(book)
+                db.books.push(book)
             }
             
             return book
         }
     },
     User: {
-        books(parent, args, ctx, info) {
-            return books.filter(book => book.users.includes(parent.id))
+        books(parent, args, { db }, info) {
+            return db.books.filter(book => book.users.includes(parent.id))
         }
     },
     Book: {
-        users(parent, args, ctx, info) {
-            return users.filter(user => user.books.includes(parent.id))
+        users(parent, args, { db }, info) {
+            return db.users.filter(user => user.books.includes(parent.id))
         }
     }
 }

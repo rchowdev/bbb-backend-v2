@@ -26,40 +26,6 @@ const books = [{
     users: ["1"]
 }]
 
-//Type Definitions
-const typeDefs = `
-    type Query {
-        user(id: ID!): User!
-        users(query: String): [User!]!
-        book(id: ID!): Book!
-        books: [Book!]!
-    }
-
-    type Mutation {
-        createUser(user: CreateUserInput!): User!
-        createBook(title: String!, author: String!, user: ID!): Book!
-    }
-
-    input CreateUserInput {
-        name: String!
-        email: String!
-    }
-
-    type User {
-        id: ID!
-        name: String!
-        email: String!
-        books: [Book!]!
-    }
-
-    type Book {
-        id: ID!
-        title: String!
-        author: String!
-        users: [User!]!
-    }
-`
-
 //Resolvers
 const resolvers = {
     Query: {
@@ -135,7 +101,7 @@ const resolvers = {
 }
 
 const server = new GraphQLServer({
-    typeDefs,
+    typeDefs: './src/schema.graphql',
     resolvers
 })
 

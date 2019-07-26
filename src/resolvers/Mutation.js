@@ -21,14 +21,14 @@ const Mutation = {
         if(!user) {
             throw new Error("User not found.")
         }
-
+        
         let book = db.books.find(book => book.title === args.title)
         if (book) {
             const userOwnsBook = book.users.some(user => user.id === args.user)
             if(userOwnsBook) {
                 throw new Error("User already owns the book")
             } else {
-                user.books.push(book)
+                user.books.push(book.id)
                 book.users.push(args.user)
             }
         } else {
@@ -38,10 +38,13 @@ const Mutation = {
                 author: args.author,
                 users: [args.user]
             }
-            user.books.push(book)
+            user.books.push(book.id)
             db.books.push(book)
         }
         
+        
+        console.log(user)
+        console.log(book)
         return book
     }
 }

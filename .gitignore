@@ -1,3 +1,4 @@
 node_modules
 .vscode
 .babelrc
+bbb-backend-prisma

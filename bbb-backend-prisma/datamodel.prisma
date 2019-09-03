@@ -1,0 +1,13 @@
+type User {
+  id: ID! @id
+  email: String! @unique
+  name: String!
+  books: [Book!]!
+}
+
+type Book {
+  id: ID! @id
+  title: String!
+  author: String!
+  users: [User!]! @relation(link: TABLE)
+}

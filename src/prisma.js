@@ -5,5 +5,19 @@ const prisma = new Prisma({
     endpoint: 'http://localhost:4466'
 });
 
-prisma.query.users(null, '{ name email books { id title } }')
-    .then(data => console.log(JSON.stringify(data, undefined, 4)));
+// prisma.query.users(null, '{ name email books { id title } }')
+//     .then(data => console.log(JSON.stringify(data, undefined, 4)));
+
+prisma.mutation.createBook({
+    data: {
+        title: "Test Book",
+        author: "Test Author",
+        users: {
+            connect: {
+                id: "cjzxsgbdj00f3077198sss8s4"
+            }
+        }
+    }
+}, '{ id title users { email } }').then(data => {
+    console.log(JSON.stringify(data, undefined, 4))
+})

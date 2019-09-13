@@ -22,27 +22,27 @@ const prisma = new Prisma({
 //     console.log(JSON.stringify(data, undefined, 4))
 // })
 
-const createBookForUser = async (userId, data) => {
-    const book = await prisma.mutation.upsertBook({
-        where: {
-            isbn: data.isbn
-        },
-        create: {
-            ...data,
-            users: {
-                connect: {
-                    id: userId
-                }
-            }
-        },
-        update: {
-            users: {
-                connect: {
-                    id: userId
-                }
-            }
-        }
-    }, '{ id title users { name } }')
+// const createBookForUser = async (userId, data) => {
+//     const book = await prisma.mutation.upsertBook({
+//         where: {
+//             isbn: data.isbn
+//         },
+//         create: {
+//             ...data,
+//             users: {
+//                 connect: {
+//                     id: userId
+//                 }
+//             }
+//         },
+//         update: {
+//             users: {
+//                 connect: {
+//                     id: userId
+//                 }
+//             }
+//         }
+//     }, '{ id title users { name } }')
 
-    return book
-}
+//     return book
+// }

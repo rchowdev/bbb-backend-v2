@@ -4,7 +4,7 @@ import Query from './resolvers/Query'
 import Mutation from './resolvers/Mutation'
 import User from './resolvers/User'
 import Book from './resolvers/Book'
-import './prisma'
+import prisma from './prisma'
 
 const server = new GraphQLServer({
     typeDefs: './src/schema.graphql',
@@ -15,7 +15,8 @@ const server = new GraphQLServer({
         Book
     },
     context: {
-        db 
+        db ,
+        prisma
     }
 })
 

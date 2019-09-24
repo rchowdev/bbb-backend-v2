@@ -1,6 +1,6 @@
 const Query = {
-    user(parent, args, { db }, info) {
-        return db.users.find(user => user.id === args.id)
+    user(parent, args, { prisma }, info) {
+        return prisma.query.user(null, info)
     },
     users(parent, args, { prisma }, info) {
         // return args.query 
@@ -8,8 +8,8 @@ const Query = {
         //     : db.users
         return prisma.query.users(null, info)
     },
-    book(parent, args, { db }, info) {
-        return db.books.find(book => book.id === args.id)
+    book(parent, args, { prisma }, info) {
+        return prisma.query.book(null, info)
     },
     books(parent, args, { prisma }, info) {
         return prisma.query.books(null, info)

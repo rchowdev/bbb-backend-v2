@@ -1,12 +1,21 @@
 const Query = {
-    user(parent, args, { prisma }, info) {
-        return prisma.query.user(null, info)
-    },
+    // user(parent, args, { prisma }, info) {
+    //     return prisma.query.user(null, info)
+    // },
     users(parent, args, { prisma }, info) {
         // return args.query 
         //     ? db.users.filter(user => user.name.toLowerCase().includes(args.query.toLowerCase()))
         //     : db.users
-        return prisma.query.users(null, info)
+
+        const opArgs = {};
+
+        if(args.query) {
+            opArgs.where = {
+                name_contains: args.query
+            }
+        }
+
+        return prisma.query.users(opArgs, info)
     },
     book(parent, args, { prisma }, info) {
         return prisma.query.book(null, info)

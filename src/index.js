@@ -15,7 +15,6 @@ const server = new GraphQLServer({
         Book
     },
     context: {
-        db ,
         prisma
     }
 })

@@ -1,17 +1,14 @@
 const Query = {
-    // user(parent, args, { prisma }, info) {
-    //     return prisma.query.user(null, info)
-    // },
     users(parent, args, { prisma }, info) {
-        // return args.query 
-        //     ? db.users.filter(user => user.name.toLowerCase().includes(args.query.toLowerCase()))
-        //     : db.users
-
         const opArgs = {};
 
         if(args.query) {
             opArgs.where = {
-                name_contains: args.query
+                OR: [{
+                    name_contains: args.query
+                }, {
+                    email_contains: args.query
+                }]
             }
         }
 

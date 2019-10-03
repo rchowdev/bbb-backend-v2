@@ -14,11 +14,20 @@ const Query = {
 
         return prisma.query.users(opArgs, info)
     },
-    book(parent, args, { prisma }, info) {
-        return prisma.query.book(null, info)
-    },
     books(parent, args, { prisma }, info) {
-        return prisma.query.books(null, info)
+        const opArgs = {};
+
+        if(args.query) {
+            opArgs.where = {
+                OR: [{
+                    title_contains: args.query
+                }, {
+                    author_contains: args.query
+                }]
+            }
+        }
+
+        return prisma.query.books(opArgs, info)
     }
 }
 

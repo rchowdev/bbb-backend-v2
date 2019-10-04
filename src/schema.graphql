@@ -6,7 +6,7 @@ type Query {
 }
 
 type Mutation {
-    createUser(user: CreateUserInput!): User!
+    createUser(data: CreateUserInput!): User!
     createBook(title: String!, author: String!, user: ID!): Book!
 }
 

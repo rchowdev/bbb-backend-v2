@@ -6,7 +6,7 @@ const Mutation = {
 
         if (emailTaken) throw new Error("Email has already been taken.");
         
-       return prisma.mutation.createUser({ data: args.data }, info)
+       return prisma.mutation.createUser({ data: args.data }, info);
     },
     createBook(parent, args, { db }, info) {
         const user = db.users.find(user => user.id === args.user)

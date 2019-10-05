@@ -8,36 +8,48 @@ const Mutation = {
         
        return prisma.mutation.createUser({ data: args.data }, info);
     },
-    createBook(parent, args, { db }, info) {
-        const user = db.users.find(user => user.id === args.user)
-        if(!user) {
-            throw new Error("User not found.")
-        }
-        
-        let book = db.books.find(book => book.title === args.title)
-        if (book) {
-            const userOwnsBook = book.users.some(user => user.id === args.user)
-            if(userOwnsBook) {
-                throw new Error("User already owns the book")
-            } else {
-                user.books.push(book.id)
-                book.users.push(args.user)
+    async createBook(parent, args, { prisma }, info) {
+        return prisma.mutation.createBook({ 
+            data: {
+                title: args.data.title,
+                author: args.data.author,
+                users: {
+                    connect: {
+                        id: args.data.user
+                    }
+                }
             }
-        } else {
-            book = {
-                id: uuidv4(),
-                title: args.title,
-                author: args.author,
-                users: [args.user]
-            }
-            user.books.push(book.id)
-            db.books.push(book)
-        }
+        }, info);
+
+        // const user = db.users.find(user => user.id === args.user)
+        // if(!user) {
+        //     throw new Error("User not found.")
+        // }
+        
+        // let book = db.books.find(book => book.title === args.title)
+        // if (book) {
+        //     const userOwnsBook = book.users.some(user => user.id === args.user)
+        //     if(userOwnsBook) {
+        //         throw new Error("User already owns the book")
+        //     } else {
+        //         user.books.push(book.id)
+        //         book.users.push(args.user)
+        //     }
+        // } else {
+        //     book = {
+        //         id: uuidv4(),
+        //         title: args.title,
+        //         author: args.author,
+        //         users: [args.user]
+        //     }
+        //     user.books.push(book.id)
+        //     db.books.push(book)
+        // }
         
         
-        console.log(user)
-        console.log(book)
-        return book
+        // console.log(user)
+        // console.log(book)
+        // return book
     }
 }
 

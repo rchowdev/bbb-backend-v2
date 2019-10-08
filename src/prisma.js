@@ -3,7 +3,7 @@ import { Prisma } from 'prisma-binding';
 const prisma = new Prisma({ 
     typeDefs: 'src/generated/prisma.graphql',
     endpoint: 'http://localhost:4466',
-    secret: process.env.PRISMA_SECRET
+    secret: 'prisma_s3cr3t'
 });
 
 export default prisma;

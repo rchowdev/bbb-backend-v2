@@ -25,12 +25,12 @@ type User {
     id: ID!
     name: String!
     email: String!
-    books: [Book!]!
+    books: [Book!]
 }
 
 type Book {
     id: ID!
     title: String!
     author: String!
-    users: [User!]! 
+    users: [User!] 
 }

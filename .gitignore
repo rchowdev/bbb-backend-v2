@@ -2,3 +2,4 @@ node_modules
 .vscode
 .babelrc
 docker-compose.yml
+*.env

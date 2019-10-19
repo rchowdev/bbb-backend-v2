@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid/v4'
+import bcrypt from 'bcryptjs'
 
 const Mutation = {
     async createUser(parent, args, { prisma }, info) {
@@ -10,7 +10,7 @@ const Mutation = {
             throw new Error("Password must be 8 characters or longer.");
         }
 
-        
+
         return prisma.mutation.createUser({ data: args.data }, info);
     },
     async createBook(parent, args, { prisma }, info) {

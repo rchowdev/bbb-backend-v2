@@ -6,7 +6,7 @@ const Mutation = {
 
         if (emailTaken) throw new Error("Email has already been taken.");
         
-       return prisma.mutation.createUser({ data: args.data }, info);
+        return prisma.mutation.createUser({ data: args.data }, info);
     },
     async createBook(parent, args, { prisma }, info) {
         return prisma.mutation.createBook({ 

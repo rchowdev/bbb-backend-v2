@@ -6,6 +6,11 @@ const Mutation = {
 
         if (emailTaken) throw new Error("Email has already been taken.");
         
+        if(args.data.password.length < 8) {
+            throw new Error("Password must be 8 characters or longer.");
+        }
+
+        
         return prisma.mutation.createUser({ data: args.data }, info);
     },
     async createBook(parent, args, { prisma }, info) {

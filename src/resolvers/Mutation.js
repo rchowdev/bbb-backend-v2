@@ -14,12 +14,17 @@ const Mutation = {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        return prisma.mutation.createUser({ 
+        const user = await prisma.mutation.createUser({ 
             data: {
                 ...args.data,
                 password: hashedPassword
             } 
         }, info);
+
+        return {
+            user,
+            token: jwt.sign({ userId: user.id, 'temp_secret'})
+        }
     },
     async createBook(parent, args, { prisma }, info) {
         return prisma.mutation.createBook({ 

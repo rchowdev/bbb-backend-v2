@@ -6,7 +6,7 @@ type Query {
 }
 
 type Mutation {
-    createUser(data: CreateUserInput!): User!
+    createUser(data: CreateUserInput!): AuthPayload!
     createBook(data: CreateBookInput!): Book!
 }
 
@@ -35,4 +35,9 @@ type Book {
     title: String!
     author: String!
     users: [User!] 
+}
+
+type AuthPayload {
+    token: String!
+    user: User!
 }

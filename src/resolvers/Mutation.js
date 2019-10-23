@@ -19,11 +19,11 @@ const Mutation = {
                 ...args.data,
                 password: hashedPassword
             } 
-        }, info);
+        });
 
         return {
             user,
-            token: jwt.sign({ userId: user.id, 'temp_secret'})
+            token: jwt.sign({ userId: user.id} , 'temp_secret')
         }
     },
     async createBook(parent, args, { prisma }, info) {

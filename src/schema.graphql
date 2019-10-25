@@ -8,6 +8,7 @@ type Query {
 type Mutation {
     createUser(data: CreateUserInput!): AuthPayload!
     createBook(data: CreateBookInput!): Book!
+    login(data: LoginUserInput!): AuthPayload!
 }
 
 input CreateUserInput {
@@ -20,6 +21,11 @@ input CreateBookInput {
     title: String!
     author: String!
     user: ID!
+}
+
+input LoginUserInput {
+    email: String!
+    password: String!
 }
 
 type User {

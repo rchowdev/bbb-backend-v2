@@ -26,6 +26,21 @@ const Mutation = {
             token: jwt.sign({ userId: user.id} , 'temp_secret')
         }
     },
+    async login(parent, args, { prisma }, info) {
+        const user = await prisma.query.user({ 
+            where: {
+                email: args.data.email 
+            }
+        })
+
+        if(!user) throw new Error("Unable to login");
+
+        const isMatch = await bcrypt.compare(args.data.password, user.password);
+
+        if(!isMatch) {
+            throw new Error("Unable to login");
+        }
+    },
     async createBook(parent, args, { prisma }, info) {
         return prisma.mutation.createBook({ 
             data: {
@@ -38,36 +53,6 @@ const Mutation = {
                 }
             }
         }, info);
-
-        // const user = db.users.find(user => user.id === args.user)
-        // if(!user) {
-        //     throw new Error("User not found.")
-        // }
-        
-        // let book = db.books.find(book => book.title === args.title)
-        // if (book) {
-        //     const userOwnsBook = book.users.some(user => user.id === args.user)
-        //     if(userOwnsBook) {
-        //         throw new Error("User already owns the book")
-        //     } else {
-        //         user.books.push(book.id)
-        //         book.users.push(args.user)
-        //     }
-        // } else {
-        //     book = {
-        //         id: uuidv4(),
-        //         title: args.title,
-        //         author: args.author,
-        //         users: [args.user]
-        //     }
-        //     user.books.push(book.id)
-        //     db.books.push(book)
-        // }
-        
-        
-        // console.log(user)
-        // console.log(book)
-        // return book
     }
 }
 
